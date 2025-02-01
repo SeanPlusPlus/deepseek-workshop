@@ -4,9 +4,12 @@ Notes on running the latest deepseek models locally
 
 ### Setup
 
-Make sure to have `Python 3.11+` installed
+Make sure to have `Python 3.12` installed
+
+Setup and activate your local env, then install requiremnets
 
 ```
-brew install python@3.12
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
-
