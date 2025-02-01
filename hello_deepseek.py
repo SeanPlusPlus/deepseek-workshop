@@ -2,7 +2,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
 # Load the tokenizer
-model_name = "deepseek-ai/deepseek-llm-7b-chat"
+model_name = "deepseek-ai/deepseek-coder-1.3b"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Load the model in CPU mode with float32 precision
