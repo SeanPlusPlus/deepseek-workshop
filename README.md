@@ -3,6 +3,15 @@
 ## Overview
 This repository is designed to help run the lightweight, laptop-friendly DeepSeek next-token predictor model locally. The goal is to get the latest small DeepSeek model up and running with a simple "Hello World" example.
 
+## What is DeepSeek?
+DeepSeek is a family of open-source language models developed to support various natural language processing (NLP) tasks, including text generation, code completion, and dialogue systems. The models are built on transformer-based architectures similar to GPT-style models and are optimized for efficient inference on both consumer hardware and high-performance computing environments.
+
+### Key Features of DeepSeek Models:
+- **Next-Token Prediction:** Predicts the most probable next word given an input prompt.
+- **Transformer Architecture:** Utilizes an advanced attention mechanism for high-quality text generation.
+- **Optimized Variants:** Available in multiple sizes, including the full-scale DeepSeek-7B and smaller, laptop-friendly models like DeepSeek-Coder-1.3B.
+- **Pretrained on Large Datasets:** Trained on diverse internet text to provide fluent and contextually relevant completions.
+
 ## Setup
 ### 1. Install Python 3.12
 Ensure you have Python 3.12 installed:
