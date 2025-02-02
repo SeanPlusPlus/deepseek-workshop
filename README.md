@@ -13,9 +13,6 @@ This project demonstrates how to:
 
 ## 📜 Running the Script
 
-
-## Running the Project 🚀
-
 Follow these steps to set up and run the project locally:
 
 ### 1️⃣ Clone the Repository
