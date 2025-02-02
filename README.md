@@ -57,6 +57,7 @@ If you run into memory issues, try switching to a **smaller model** or using CPU
 To **fully grasp how the model works**, we **highly encourage** you to review the **extensive comments** in `hello_deepseek.py`.  
 
 This script **not only runs the model** but also explains:
+
 ✅ **What DeepSeek AI is and how it works**  
 ✅ **Why we use specific optimizations** (e.g., `torch_dtype`, `device_map`, `offload_folder`)  
 ✅ **How tokenization transforms text into numbers and back**  
