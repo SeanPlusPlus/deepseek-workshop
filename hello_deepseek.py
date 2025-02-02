@@ -1,23 +1,30 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# Load the tokenizer
-model_name = "deepseek-ai/deepseek-coder-1.3b"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+# Select model
+model_name = "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"  # Try a smaller model if OOM persists
 
-# Load the model in CPU mode with float32 precision
+device = "mps" if torch.backends.mps.is_available() else "cpu"
+print(f"Using device: {device}")
+
+# Load tokenizer
+tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+
+# Load model with optimized settings
 model = AutoModelForCausalLM.from_pretrained(
     model_name,
-    torch_dtype=torch.float32,  # Adjust precision for CPU
-    device_map="cpu"  # Explicitly force CPU mode
+    torch_dtype=torch.float16 if device != "cpu" else torch.float32,
+    device_map="auto" if device != "cpu" else None,
+    offload_folder="offload" if device != "cpu" else None,
 )
+model.to(device)
 
-# Test generation
-input_text = "Hello, DeepSeek! Can you complete this sentence:"
-inputs = tokenizer(input_text, return_tensors="pt").to("cpu")  # Force CPU
+# Run a test inference
+prompt = "Once upon a time,"
+inputs = tokenizer(prompt, return_tensors="pt").to(device)
 
 with torch.no_grad():
-    output = model.generate(**inputs, max_length=50)
+    output = model.generate(**inputs, max_new_tokens=50)
 
-generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
-print("Generated Text:", generated_text)
+# Decode and print output
+print(tokenizer.decode(output[0], skip_special_tokens=True))

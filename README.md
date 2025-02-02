@@ -1,74 +1,57 @@
 # DeepSeek Workshop
 
-## Overview
-This repository is designed to help run the lightweight, laptop-friendly DeepSeek next-token predictor model locally. The goal is to get the latest small DeepSeek model up and running with a simple "Hello World" example.
+## Introduction
+This repository is dedicated to experimenting with DeepSeek models using Hugging Face's `transformers` library. The goal is to explore text generation capabilities, experiment with various prompts, and fine-tune the performance on a local machine.
 
-## What is DeepSeek?
-DeepSeek is a family of open-source language models developed to support various natural language processing (NLP) tasks, including text generation, code completion, and dialogue systems. The models are built on transformer-based architectures similar to GPT-style models and are optimized for efficient inference on both consumer hardware and high-performance computing environments.
+## Installation
+To set up the environment, follow these steps:
 
-### Key Features of DeepSeek Models:
-- **Next-Token Prediction:** Predicts the most probable next word given an input prompt.
-- **Transformer Architecture:** Utilizes an advanced attention mechanism for high-quality text generation.
-- **Optimized Variants:** Available in multiple sizes, including the full-scale DeepSeek-7B and smaller, laptop-friendly models like DeepSeek-Coder-1.3B.
-- **Pretrained on Large Datasets:** Trained on diverse internet text to provide fluent and contextually relevant completions.
-
-## Setup
-### 1. Install Python 3.12
-Ensure you have Python 3.12 installed:
-```sh
-python --version
-```
-If not installed, use Homebrew:
-```sh
-brew install python@3.12
-```
-
-### 2. Create a Virtual Environment
 ```sh
 python -m venv venv
-source venv/bin/activate
-```
-
-### 3. Install Dependencies
-```sh
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
+source venv/bin/activate  # On macOS/Linux
+venv\Scripts\activate    # On Windows
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
 
 ## Running the Model
-### 1. Run the "Hello World" Script
-Execute the script to load the model and generate text:
+Ensure that Hugging Face authentication is set up:
+
+```sh
+huggingface-cli login
+```
+
+Then, run the script:
+
 ```sh
 python hello_deepseek.py
 ```
 
-### 2. Expected Output
-Once the model is loaded, it should generate text based on the given prompt.
+## Challenges Encountered
 
-## Optimizations
-- **Use a smaller model:** If memory is an issue, switch to `deepseek-ai/deepseek-coder-1.3b`.
-- **Reduce memory usage:** If running on CPU, modify the script to use `torch_dtype=torch.float32`.
-- **Use quantization:** Enable `BitsAndBytesConfig` for 8-bit or 4-bit model loading.
+### 1. Authentication Issues
+Initially, we ran into errors when trying to access the DeepSeek models from Hugging Face. These were resolved by generating a token from [Hugging Face Tokens](https://huggingface.co/settings/tokens) and logging in using `huggingface-cli login`.
 
-## Troubleshooting
-- If the model download is slow, check your internet connection or use a wired connection.
-- If `bitsandbytes` fails, ensure it is installed correctly:
-  ```sh
-  python -m pip install -U bitsandbytes accelerate
-  ```
-- If `torch` is missing, install it explicitly:
-  ```sh
-  python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
-  ```
+### 2. Incorrect Model Identifiers
+Some model names were incorrect or outdated. We had to verify the available DeepSeek models on [Hugging Face Model Hub](https://huggingface.co/models) and select a valid identifier.
 
-## Notes
-- Model files are cached in `~/.cache/huggingface/`.
-- The `.gitignore` includes virtual environments, build artifacts, and Hugging Face cache.
+### 3. Quantization Conflicts
+Our initial attempts to use quantization resulted in errors due to unsupported `fp8` quantization. To resolve this:
+- We explicitly disabled quantization.
+- We installed `bitsandbytes` correctly but later realized it wasn’t necessary for our setup.
 
-## License
-This repository is open-source under the MIT License.
+### 4. Dependency Issues
+We faced a conflict between NumPy versions:
+- `bitsandbytes` expected an older NumPy version (`<2`), but some dependencies required NumPy 2.x.
+- Downgrading to `numpy<2` resolved the issue.
 
-## Acknowledgments
-- Built using [Hugging Face Transformers](https://huggingface.co/docs/transformers/).
-- DeepSeek models provided by [DeepSeek AI](https://huggingface.co/deepseek-ai).
+### 5. Memory Errors on macOS (MPS Backend)
+Since we were running on a Mac with an Apple Silicon GPU (MPS backend), we encountered `MPS backend out of memory` errors when loading large models. Solutions:
+- Reduced model size to `DeepSeek-R1-Distill-Qwen-7B` instead of larger variants.
+- Used `PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0` to disable strict memory limits.
+- Ensured we were using PyTorch 2.2+ with MPS optimizations.
 
+## Next Steps
+- Test performance and inference speed with different batch sizes.
+- Explore fine-tuning for domain-specific tasks.
+- Compare results with OpenAI models.
