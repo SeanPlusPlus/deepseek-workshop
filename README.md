@@ -1,56 +1,93 @@
-# DeepSeek Workshop
+# 🚀 DeepSeek Workshop
 
-## Introduction
-This repository is dedicated to experimenting with DeepSeek models using Hugging Face's `transformers` library. The goal is to explore text generation capabilities, experiment with various prompts, and fine-tune the performance on a local machine.
+Welcome to the **DeepSeek Workshop**, a collaborative project between **Sean Stephenson** and **ChatGPT**! 🤝 This project is all about exploring **cutting-edge AI models** and fine-tuning them for **practical text generation**.
 
-## Installation
-To set up the environment, follow these steps:
+## 📌 Overview
+This project demonstrates how to:
+- Load and interact with **DeepSeek AI models** using Hugging Face's `transformers` library.
+- Optimize model performance on different hardware (Mac MPS, CPU, etc.).
+- Handle potential **out-of-memory (OOM)** issues with best practices.
+- **Format model outputs** into a nicely styled **HTML page** for easy review.
 
-```sh
-python -m venv venv
-source venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
-```
+---
 
-## Running the Model
-Ensure that Hugging Face authentication is set up:
-
-```sh
-huggingface-cli login
-```
-
-Then, run the script:
-
-```sh
+## 📜 Running the Script
+To execute the model and see its responses:
+```bash
 python hello_deepseek.py
 ```
+Once completed, open `output.html` in your browser to see the generated responses.
 
-## Challenges Encountered
+---
 
-### 1. Authentication Issues
-Initially, we ran into errors when trying to access the DeepSeek models from Hugging Face. These were resolved by generating a token from [Hugging Face Tokens](https://huggingface.co/settings/tokens) and logging in using `huggingface-cli login`.
+## 🔍 **Diving Deeper: Understanding `hello_deepseek.py`**
+To **fully grasp how the model works**, we **highly encourage** you to review the **extensive comments** in `hello_deepseek.py`.  
 
-### 2. Incorrect Model Identifiers
-Some model names were incorrect or outdated. We had to verify the available DeepSeek models on [Hugging Face Model Hub](https://huggingface.co/models) and select a valid identifier.
+This script **not only runs the model** but also explains:
+✅ **What DeepSeek AI is and how it works**  
+✅ **Why we use specific optimizations** (e.g., `torch_dtype`, `device_map`, `offload_folder`)  
+✅ **How tokenization transforms text into numbers and back**  
+✅ **How to adjust model settings to prevent memory issues**  
+✅ **Why using `torch.no_grad()` helps save memory during inference**  
+✅ **How we structure example prompts to test various AI capabilities**  
 
-### 3. Quantization Conflicts
-Our initial attempts to use quantization resulted in errors due to unsupported `fp8` quantization. To resolve this:
-- We explicitly disabled quantization.
-- We installed `bitsandbytes` correctly but later realized it wasn’t necessary for our setup.
+Reading through `hello_deepseek.py` will give you **insight into AI model deployment** and help you debug or customize the script for your own use.
 
-### 4. Dependency Issues
-We faced a conflict between NumPy versions:
-- `bitsandbytes` expected an older NumPy version (`<2`), but some dependencies required NumPy 2.x.
-- Downgrading to `numpy<2` resolved the issue.
+---
 
-### 5. Memory Errors on macOS (MPS Backend)
-Since we were running on a Mac with an Apple Silicon GPU (MPS backend), we encountered `MPS backend out of memory` errors when loading large models. Solutions:
-- Reduced model size to `DeepSeek-R1-Distill-Qwen-7B` instead of larger variants.
-- Used `PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0` to disable strict memory limits.
-- Ensured we were using PyTorch 2.2+ with MPS optimizations.
+## 🎨 **Formatting Model Outputs as HTML**
+The generated AI responses are automatically saved into an **HTML file** for a clean and shareable output.  
+
+To modify how this works:
+- Check out `html_formatter.py`, which takes model outputs and creates a **Bootstrap-styled** web page.
+- Feel free to **customize the CSS and layout** as needed!
+
+---
+
+## ⚠️ **Troubleshooting & Performance Tuning**
+We hit **a ton of roadblocks** while getting this to work, and we want to make sure you don't have to struggle as much! Here are the major lessons learned:
+
+### **1️⃣ Resolving Model Authentication Issues** 🔑
+- We initially hit 401 and 404 errors when trying to load DeepSeek models.
+- Solution: We needed to **log in to Hugging Face** and use an **access token**.
+  ```bash
+  huggingface-cli login
+  ```
+  Then, visit [Hugging Face Tokens](https://huggingface.co/settings/tokens) to generate an access token.
+
+### **2️⃣ Fixing Out-of-Memory (OOM) Errors** 🚀
+- Running larger models caused memory crashes on **Mac MPS (Metal Performance Shaders)**.
+- Solutions:
+  - **Use a smaller model**: If `"deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"` fails, try `"deepseek-ai/DeepSeek-R1-Distill-Qwen-1.3B"`.
+  - **Lower `max_new_tokens`** in `model.generate()`.
+  - **Offload to CPU**: If necessary, manually set `device = "cpu"`.
+
+### **3️⃣ Bitsandbytes & PyTorch Compatibility** 🏗️
+- Installing `bitsandbytes` was tricky due to **NumPy version conflicts**.
+- Solution:
+  ```bash
+  pip install --no-cache-dir --force-reinstall numpy==1.26.4 bitsandbytes torch
+  ```
+- If using MPS, ensure `torch==2.2.2` is installed!
+
+### **4️⃣ Debugging Torch Device Errors** 🔥
+- If `MPS` backend gives errors:
+  ```bash
+  PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 python hello_deepseek.py
+  ```
+  This disables memory limits (use cautiously!).
+
+---
 
 ## Example Output
 
 <img width="740" alt="image" src="https://github.com/user-attachments/assets/54644eac-660a-4ef7-ac4c-1d39057b644e" />
 
+---
+
+## 🔥 Next Steps
+- **Run the script** and see what AI-generated text it produces!  
+- **Modify prompts** to test different types of responses.  
+- **Experiment with different models** from Hugging Face.  
+
+Let us know if you have any questions or improvements! 🚀💡
