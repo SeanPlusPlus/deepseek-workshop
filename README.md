@@ -50,7 +50,7 @@ Since we were running on a Mac with an Apple Silicon GPU (MPS backend), we encou
 - Used `PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0` to disable strict memory limits.
 - Ensured we were using PyTorch 2.2+ with MPS optimizations.
 
-## Next Steps
-- Test performance and inference speed with different batch sizes.
-- Explore fine-tuning for domain-specific tasks.
-- Compare results with OpenAI models.
+## Example Output
+
+<img width="740" alt="image" src="https://github.com/user-attachments/assets/54644eac-660a-4ef7-ac4c-1d39057b644e" />
+
