@@ -8,8 +8,7 @@ To set up the environment, follow these steps:
 
 ```sh
 python -m venv venv
-source venv/bin/activate  # On macOS/Linux
-venv\Scripts\activate    # On Windows
+source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
