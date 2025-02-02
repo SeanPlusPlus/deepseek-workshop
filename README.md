@@ -12,11 +12,44 @@ This project demonstrates how to:
 ---
 
 ## 📜 Running the Script
-To execute the model and see its responses:
+
+
+## Running the Project 🚀
+
+Follow these steps to set up and run the project locally:
+
+### 1️⃣ Clone the Repository
+```bash
+git clone <your-repo-url>
+cd deepseek-workshop
+```
+
+### 2️⃣ Set Up a Virtual Environment
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3️⃣ Install Dependencies
+```bash
+pip install --upgrade pip  # Ensure pip is up-to-date
+pip install -r requirements.txt
+```
+
+### 4️⃣ Run the Script
 ```bash
 python hello_deepseek.py
 ```
-Once completed, open `output.html` in your browser to see the generated responses.
+
+This will:
+- Load the **DeepSeek-R1-Distill-Qwen-1.5B** model.
+- Run an inference on a sample prompt.
+- Generate and save results into a formatted HTML file.
+
+### 5️⃣ View the Output
+The output will be saved as an HTML file and automatically opened in your default browser.
+
+If you run into memory issues, try switching to a **smaller model** or using CPU mode by adjusting `device = "cpu"` in the script.
 
 ---
 
